@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="12"
+    android:orientation="vertical"
+    tools:context="com.example.translator.CameraViewActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="10"
+        android:background="@color/blackOpacity"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/inputLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:drawableEnd="@drawable/ic_arrow_drop_down"
+            android:onClick="OnClickMethod"
+            android:text="English"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textAllCaps="false"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            app:srcCompat="@drawable/baseline_sync_alt_black_18dp"
+            android:layout_gravity="center"
+
+            />
+
+        <Button
+            android:id="@+id/outputLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:drawableRight="@drawable/ic_arrow_drop_down"
+            android:onClick="OnClickMethod"
+            android:text="Urdu"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textAllCaps="false"/>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.wonderkiln.camerakit.CameraView
+            android:id="@+id/cameraView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/blackOpacity"
+                >
+
+                <ImageView
+                    android:id="@+id/capture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/roundbutton"
+                    android:drawableTint="@color/colorPrimary"
+                    android:src="@drawable/ic_local_see_black_24dp"
+
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true" />
+
+
+
+                <ImageView
+                    android:id="@+id/gallery"
+                    android:text=" "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|bottom"
+                    android:background="@android:color/transparent"
+                    android:drawableTint="@android:color/white"
+                    android:src="@drawable/ic_photo_library_black_24dp"
+                    android:layout_alignParentBottom="true"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+     </LinearLayout>
+
+
+</LinearLayout>

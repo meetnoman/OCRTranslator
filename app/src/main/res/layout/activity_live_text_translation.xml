@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="12"
+    tools:context=".LiveTextTranslation">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="10"
+        android:background="@color/blackOpacity"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/inputLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:drawableEnd="@drawable/ic_arrow_drop_down"
+            android:onClick="OnClickMethod"
+            android:text="English"
+            android:textColor="@color/common_google_signin_btn_text_dark"
+            android:textAllCaps="false"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            app:srcCompat="@drawable/baseline_sync_alt_black_18dp"
+            android:layout_gravity="center"
+
+            />
+
+        <Button
+            android:id="@+id/outputLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:drawableRight="@drawable/ic_arrow_drop_down"
+            android:onClick="OnClickMethod"
+            android:text="Urdu"
+            android:textColor="@color/common_google_signin_btn_text_dark"
+            android:textAllCaps="false"/>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/camLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+         android:orientation="vertical">
+
+        <com.example.translator.camera.CameraSourcePreview
+            android:id="@+id/camera_source_preview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+
+            <com.example.translator.others.GraphicOverlay
+                android:id="@+id/graphics_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+        </com.example.translator.camera.CameraSourcePreview>
+
+
+
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:weightSum="12"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="vertical" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="11"
+            android:weightSum="10"
+            >
+            <ScrollView
+                android:id="@+id/srcTextScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                android:layout_weight="5"
+                android:scrollbars="vertical" >
+
+                <TextView
+                    android:id="@+id/srcText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="source text" />
+            </ScrollView>
+
+
+
+
+
+
+            <ScrollView
+                android:id="@+id/translatedTextScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:fillViewport="true"
+                android:scrollbars="vertical" >
+
+                <TextView
+                    android:id="@+id/translatedText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="translated text" />
+
+            </ScrollView>
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
