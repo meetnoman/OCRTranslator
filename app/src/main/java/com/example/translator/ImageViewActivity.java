@@ -75,7 +75,7 @@ public class ImageViewActivity extends AppCompatActivity {
         imageView.setOnCropWindowChangedListener(new CropImageView.OnSetCropWindowChangeListener() {
             @Override
             public void onCropWindowChanged() {
-                Toast.makeText(getApplicationContext(),"Getting SOme thing OnsetCropwindow",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(),"Getting SOme thing OnsetCropwindow",Toast.LENGTH_SHORT).show();
                 Bitmap cropped = imageView.getCroppedImage();
                 BitmapHelper.getInstance().setBitmap(cropped);
                  bitmap=cropped;

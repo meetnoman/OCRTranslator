@@ -22,13 +22,27 @@
         android:orientation="vertical">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <TextView
             android:id="@+id/translation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="1"
+            android:paddingLeft="12dp"
             android:text="English To English Translation" />
+
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:background="@drawable/ic_close_blackhistory" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/timer"
@@ -45,6 +59,13 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             tools:srcCompat="@mipmap/ic_launcher_round" />
+        <TextView
+            android:id="@+id/textEnter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+             android:text="View Translation"
+           />
 
         <TextView
             android:id="@+id/viewTranslation"

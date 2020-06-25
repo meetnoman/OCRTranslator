@@ -4,15 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.translator.DatabaseHelper.DatabaseHelper;
-import com.example.translator.Helper.BitmapHelper;
 import com.example.translator.Helper.LanguageRemindHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,82 +24,64 @@ import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguag
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
+public class TextEnterTranslation extends AppCompatActivity {
 
-public class TextExtracted extends AppCompatActivity {
-
-
-    EditText showLanguange,showText,showTranslation;
-    Button cancel,save;
-    ArrayList<String> recognizedLanguages;
-    String allLanguageAbbreviations="";
-    private String textDetect;
-    private String textTranslation;
-    Bitmap bitmap;
+    EditText textExtract;
+    TextView textTranslation;
+    Button finish;
+    TextAugmenter textAugmenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_extracted);
-        showLanguange=(EditText)findViewById(R.id.showLanguages);
-        showText=(EditText)findViewById(R.id.showText);
-        showTranslation=findViewById(R.id.showTranslation);
-        cancel=(Button)findViewById(R.id.cancel);
-        save=findViewById(R.id.save);
-        bitmap= BitmapHelper.getInstance().getBitmap();
+        setContentView(R.layout.activity_text_enter_detection);
 
+        textExtract=findViewById(R.id.textExtract);
+        textTranslation=findViewById(R.id.textTranslate);
+        finish=findViewById(R.id.finish);
 
-        Intent intent=getIntent();
-        textDetect=intent.getStringExtra("Text");
+          textAugmenter=new TextAugmenter();
 
-        Bundle bundle=intent.getExtras();
-        if (bundle!=null) {
-            recognizedLanguages = (ArrayList<String>) bundle.getSerializable("languages");
-            TextAugmenter obj=new TextAugmenter();
-            for (String a:recognizedLanguages) {
-                if (obj.getAbbrevation(a)!=null){
-                    allLanguageAbbreviations+=obj.getAbbrevation(a);
+        textExtract.setHint("Enter Text ("+textAugmenter.getAbbrevation( LanguageRemindHelper.getInstance().getInputLanguage())+")");
+        textTranslation.setText("Translation ("+textAugmenter.getAbbrevation(LanguageRemindHelper.getInstance().getOutputLanguage())+")");
 
-                    allLanguageAbbreviations+=" ";
+        textExtract.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                }
             }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        }else {
-            recognizedLanguages.add("Could Not Recognized Any language ");
-        }
+            }
 
-
-        // Toast.makeText(getApplicationContext(),"Languages RecO: "+allLanguageAbbreviations,Toast.LENGTH_LONG).show();
-
-        showLanguange.setText(String.valueOf(allLanguageAbbreviations));
-
-        showText.setText(intent.getStringExtra("Text"));
-
-        //////////////////////////////
-        startTranslation(textDetect);
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //Toast.makeText(getApplicationContext(),textExtract.getText(),Toast.LENGTH_SHORT).show();
+                startTranslation(textExtract.getText().toString());
+            }
+        });
 
 
-        save.setOnClickListener(new View.OnClickListener() {
+        finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addRecord(textDetect,textTranslation);
+                Intent intent=new Intent(getApplicationContext(),TextTranslation.class);
+                intent.putExtra("textExtracted",textExtract.getText().toString());
+                intent.putExtra("textTranslation",textTranslation.getText().toString());
+                startActivity(intent);
+
+                saveData(textExtract.getText().toString(),textTranslation.getText().toString());
+
             }
         });
 
 
     }
 
-    public void OnCLickMethod(View view){
-        if (view==cancel){
-            Intent intent=new Intent(this,TextAugmenter.class);
-            this.startActivity(intent);
-            finish();
-        }
 
-    }
+
 
 
 
@@ -106,7 +89,13 @@ public class TextExtracted extends AppCompatActivity {
 
     public void startTranslation(String text) {
 
+        if(text.equalsIgnoreCase("")){
+            textTranslation.setText("Translation ("+textAugmenter.getAbbrevation(LanguageRemindHelper.getInstance().getOutputLanguage())+")");
+
+        }else{
         getLanguageCode(text);
+    }
+
     }
 
 
@@ -139,7 +128,7 @@ public class TextExtracted extends AppCompatActivity {
         int inputLanguageCode = FirebaseTranslateLanguage.languageForLanguageCode(LanguageRemindHelper.getInstance().getInputLanguage());
 
         //int targetL = targetLangSelector.getSelectedItemPosition();
-       // int code = FirebaseTranslateLanguage.languageForLanguageCode(allLanguagesCode.get(targetL));
+        // int code = FirebaseTranslateLanguage.languageForLanguageCode(allLanguagesCode.get(targetL));
         int outputLanguageCode = FirebaseTranslateLanguage.languageForLanguageCode(LanguageRemindHelper.getInstance().getOutputLanguage());
 
         FirebaseTranslatorOptions options =
@@ -165,11 +154,8 @@ public class TextExtracted extends AppCompatActivity {
                                                 new OnSuccessListener<String>() {
                                                     @Override
                                                     public void onSuccess(@NonNull String translatedText) {
-                                                        showTranslation.setText(translatedText);
-                                                        textTranslation= translatedText;
 
-
-
+                                                        textTranslation.setText(translatedText);
                                                     }
                                                 })
                                         .addOnFailureListener(
@@ -178,7 +164,7 @@ public class TextExtracted extends AppCompatActivity {
                                                     public void onFailure(@NonNull Exception e) {
                                                         // Error.
                                                         Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                     }
+                                                    }
                                                 });
 
 
@@ -197,35 +183,17 @@ public class TextExtracted extends AppCompatActivity {
     }
 
 
-    private void addRecord(String text,String translation){
-        DatabaseHelper db=new DatabaseHelper(this);
+    public  void saveData(String textExtracted,String textTranslation){
+        DatabaseHelper databaseHelper=new DatabaseHelper(getApplicationContext());
 
-        //Bitmap image = BitmapFactory.decodeResource(getResources(),bitmap);
-// convert bitmap to byte
-        Bitmap image=bitmap;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte imageInByte[]  = stream.toByteArray();
+        boolean flag=databaseHelper.storeEnterdTextTranslation(textExtracted,textTranslation,textAugmenter.getAbbrevation( LanguageRemindHelper.getInstance().getInputLanguage()),textAugmenter.getAbbrevation( LanguageRemindHelper.getInstance().getOutputLanguage()));
 
-        TextAugmenter obj=new TextAugmenter();
-        String inputLangauge=obj.getAbbrevation( LanguageRemindHelper.getInstance().getInputLanguage());
-        String outputLanguage=obj.getAbbrevation( LanguageRemindHelper.getInstance().getOutputLanguage());
-
-
-        boolean temp=db.storeTextTranslation(text,translation,imageInByte,inputLangauge,outputLanguage);
-        if (temp){
-            Toast.makeText(this, "Recorded inserted...", Toast.LENGTH_SHORT).show();
+        if (flag){
+            Toast.makeText(getApplicationContext(),"Text Stored"+flag,Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(this, "Recorded Not inserted...", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(getApplicationContext(),"OOOPS No"+flag,Toast.LENGTH_SHORT).show();
         }
-
     }
-
-
-
-
-
 
 
 

@@ -115,6 +115,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
          }
 
     }
+
+
+
+    public boolean storeEnterdTextTranslation(String text, String translation,String inputLanguage,String outputLanguage){
+        SQLiteDatabase sdb=this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("text",text);
+        values.put("translation",translation);
+        values.put("inputLanguage",inputLanguage);
+        values.put("outputLanguage",outputLanguage);
+        values.put("dateTime",getDateTime());
+
+        try
+        {
+            sdb.insertOrThrow("history", null, values);
+            return true;
+        }
+        catch(SQLiteException ex)
+        {   return false;
+        }
+
+    }
+
+
+
+
+
+
+
+
+
     public void storeLanguage(){
         SQLiteDatabase sdb=this.getWritableDatabase();
 
@@ -169,7 +202,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    public Cursor getQueryResult(){
+
+
+
+    public Cursor getHistoryResult(){
      String query="Select * from history";
      SQLiteDatabase sdb=this.getReadableDatabase();
      Cursor cursor= sdb.rawQuery(query,null);
@@ -204,6 +240,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public String deleteRecord(String tableName,String id) {
+        SQLiteDatabase sdb = this.getWritableDatabase();
+
+        try {
+            //new String[]{String.valueOf(id)}
+             int a=sdb.delete(tableName, "id="+id,null);
+               return String.valueOf(a);
+        }
+    catch (Exception e){
+
+            return e.getMessage();
+    }
+
+    }
 
 
 

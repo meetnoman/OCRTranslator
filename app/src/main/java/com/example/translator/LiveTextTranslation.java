@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -64,6 +65,7 @@ public class LiveTextTranslation extends AppCompatActivity   {
     Spinner targetLangSelector;
     private static LiveTextTranslation instance;
     Bitmap globalImage;
+
 
     private  ArrayList<String> allLanguagesAbbrevations=new ArrayList<>(Arrays.asList("English","Urdu","Chineese","Arabic","Turkish","Russian","Indonesian","Japanese","Italian"
             ,"Hindi","Persian","Spanish","Afrikaans","German","French"));
@@ -211,7 +213,16 @@ public class LiveTextTranslation extends AppCompatActivity   {
 
 
         this.globalImage = bitmap;
+
+
+        Toast toast = Toast.makeText(this, "Pause Translation\n It may take little time", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+
+
+
        // recognizeText(bitmap);
+
 
          srcText.setText(text);
         textDetect.add(text);
@@ -280,59 +291,6 @@ public class LiveTextTranslation extends AppCompatActivity   {
         Toast.makeText(getApplicationContext(), "Load in BLock"+firebaseVisionText.getText(), Toast.LENGTH_LONG).show();
 
         srcText.setText(blocks.toString());
-/*
-
-        for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
-
-            for (FirebaseVisionText.Line line : block.getLines()) {
-
-                List<RecognizedLanguage> languagesReco=line.getRecognizedLanguages();
-
-
-
-
-                for (FirebaseVisionText.Element element: line.getElements()){
-                    languages = line.getRecognizedLanguages();
-
-
-                    String tempInputLanguage=LanguageRemindHelper.getInstance().getInputLanguage();
-                    if (tempInputLanguage.equalsIgnoreCase("en") || tempInputLanguage.equalsIgnoreCase("zh") ){
-                        if (languages.size()!=0 && languages.get(0).getLanguageCode().equalsIgnoreCase( tempInputLanguage)) {
-                            textRecognized.append(element.getText()+" ");
-                            if (!uniqueRecognizedLanguage.contains(languages.get(0).getLanguageCode())) {
-                                uniqueRecognizedLanguage.add(languages.get(0).getLanguageCode());
-                            }
-                        }
-                    }
-
-                    else if (tempInputLanguage.equalsIgnoreCase("ur")){
-                        if (languages.size()!=0    ) {
-                            if (languages.get(0).getLanguageCode().equalsIgnoreCase( tempInputLanguage) || languages.get(0).getLanguageCode().equalsIgnoreCase( "fa")){
-                                textRecognized.append(element.getText()+" ");
-                                if (!uniqueRecognizedLanguage.contains(languages.get(0).getLanguageCode())) {
-                                    uniqueRecognizedLanguage.add(languages.get(0).getLanguageCode());
-                                }
-                            }
-                        }
-                    }
-
-
-
-                    else if(languages.size()!=0 && LanguageRemindHelper.getInstance().getInputLanguage().equalsIgnoreCase("Detect Language")){
-                        textRecognized.append(element.getText()+" ");
-                        if (!uniqueRecognizedLanguage.contains(languages.get(0).getLanguageCode())) {
-                            uniqueRecognizedLanguage.add(languages.get(0).getLanguageCode());
-                        }
-                    }
-
-                }
-
-            }
-        }
-*/
-      //  srcText.setText(textRecognized.toString());
-       // textDetect.add(textRecognized.toString());
-       // getLanguageCode(textRecognized.toString());
 
 
     }

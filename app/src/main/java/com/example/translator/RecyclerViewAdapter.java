@@ -2,9 +2,12 @@ package com.example.translator;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,8 +54,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         HashMap<String,Bitmap> image=mImage.get(position);
 
         holder.translation.setText(data.get("inputLanguage")+" To "+data.get("outputLanguage")+" Translation");
-        holder.imageView.setImageBitmap( image.get("image"));
+
+            if (image.get("image")==null){
+
+                holder.textEnter.setVisibility(View.VISIBLE);
+                holder.textEnter.setText(data.get("text"));
+                holder.imageView.setVisibility(View.GONE);
+            }else {
+                holder.imageView.setImageBitmap(image.get("image"));
+            }
+
         holder.timerView.setText(data.get("date"));
+//        holder.delete.setText("Delete");
 
 
     }
@@ -65,8 +78,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView viewTranslation,timerView,translation;
+        TextView viewTranslation,timerView,translation,textEnter;
         ImageView imageView;
+        Button delete;
 
         IMyItemClickListener clickListener;
 
@@ -75,19 +89,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageView=itemView.findViewById(R.id.imageView);
             viewTranslation=itemView.findViewById(R.id.viewTranslation);
             translation=itemView.findViewById(R.id.translation);
+            textEnter=itemView.findViewById(R.id.textEnter);
+            delete=itemView.findViewById(R.id.delete);
             timerView=itemView.findViewById(R.id.timer);
+
             this.clickListener=iMyItemClickListener;
 
             viewTranslation.setOnClickListener(this);
+            delete.setOnClickListener(this);
         }
 
 
         @Override
         public void onClick(View view) {
-            if(clickListener != null)
-                clickListener.onMyItemClick(getAdapterPosition());
-            //Toast.makeText( view.getContext(),"Position:"+getAdapterPosition(),Toast.LENGTH_SHORT).show();
+            if(clickListener != null) {
 
+                if (view.getId()==viewTranslation.getId()) {
+                    clickListener.onMyItemClick(getAdapterPosition());
+                    //Toast.makeText( view.getContext(),"View Translation Position:"+getAdapterPosition(),Toast.LENGTH_SHORT).show();
+                }
+                else if (view.getId()==delete.getId()){
+                    clickListener.onDeleteItemClick(getAdapterPosition());
+                   mData.remove(getAdapterPosition());
+                   mImage.remove(getAdapterPosition());
+                   notifyDataSetChanged();
+                     //Toast.makeText( view.getContext(),"Delete Position:",Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }
         }
     }
 
@@ -105,7 +136,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public interface IMyItemClickListener
     {
         void onMyItemClick( int position);
+        void onDeleteItemClick(int position);
     }
+
+
+
 
 }
 

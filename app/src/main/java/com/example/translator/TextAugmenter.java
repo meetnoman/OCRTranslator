@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.translator.DatabaseHelper.DatabaseHelper;
@@ -18,6 +21,7 @@ import java.util.Arrays;
 public class TextAugmenter extends AppCompatActivity {
 
     Button inputLanguage,outputLanguage,camera,textExtractor,history;
+    EditText textEnter;
 
     private ArrayList<String> allLanguagesCode=new ArrayList<>(Arrays.asList("en","ur","zh","ar","tr","ru","id","ja","it","hi","fa","es","af","de","fr"));
     private  ArrayList<String> allLanguagesAbbrevations=new ArrayList<>(Arrays.asList("English","Urdu","Chineese","Arabic","Turkish","Russian","Indonesian","Japanese","Italian"
@@ -35,9 +39,24 @@ public class TextAugmenter extends AppCompatActivity {
         camera=(Button)findViewById(R.id.camera);
         textExtractor=(Button)findViewById(R.id.textExtractor);
         history=(Button)findViewById(R.id.history);
+        textEnter=(EditText) findViewById(R.id.textEnter);
 
         setInputLanguageAndOutputLanguage();
       //  Toast.makeText(getApplicationContext(),"Language Selected: "+LanguageRemindHelper.getInstance().getOutputLanguage(),Toast.LENGTH_SHORT).show();
+
+
+        textEnter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),TextEnterTranslation.class);
+                startActivity(intent);
+
+
+            }
+        });
+
+
+
 
 
     }
@@ -77,7 +96,14 @@ public class TextAugmenter extends AppCompatActivity {
             // Toast.makeText(this,"History",Toast.LENGTH_LONG).show();
             this.startActivity(new Intent(this,historyActivity.class));
         }
+        if (view==textEnter){
+            Toast.makeText(getApplicationContext(),"Pak ONCLICK",Toast.LENGTH_SHORT).show();
+           // this.startActivity(new Intent(this,TextEnterTranslation.class));
+
+        }
     }
+
+
 
 
     public void setInputLanguageAndOutputLanguage(){
