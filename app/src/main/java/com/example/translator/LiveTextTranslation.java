@@ -218,6 +218,7 @@ public class LiveTextTranslation extends AppCompatActivity   {
         Toast toast = Toast.makeText(this, "Pause Translation\n It may take little time", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+        //Pak
 
 
 
